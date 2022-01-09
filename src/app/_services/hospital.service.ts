@@ -17,7 +17,7 @@ export class HospitalService {
 
   getHospitals() {
     
-    return this.http.get('https://localhost:5001/api/hospitals').pipe(
+    return this.http.get('https://hctp-database-test.herokuapp.com/api/hospitals').pipe(
       map(res=>{
         return res as hospitalModel[]
       } ))
