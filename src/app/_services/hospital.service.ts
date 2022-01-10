@@ -24,6 +24,7 @@ export class HospitalService {
   }
   HospitalTypes =["GENERAL ACUTE CARE","CRITICAL ACCESS","MILITARY","SPECIAL","LONG TERM CARE","REHABILITATION","PSYCHIATRIC","CHILDREN","WOMEN","CHRONIC DISEASE"]
 
+  
   USStateList =[
     {
       "name": "Alabama",

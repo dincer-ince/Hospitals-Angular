@@ -19,6 +19,7 @@ import { toStringHDMS } from 'ol/coordinate.js';
 import Geometry from 'ol/geom/Geometry';
 import Cluster from 'ol/source/Cluster';
 import { ThisReceiver } from '@angular/compiler';
+import { NgClass } from '@angular/common';
 
 
 
@@ -51,7 +52,7 @@ export class MainpageComponent implements OnInit {
     telephone:"",
     type: "",
     status: "",
-    population: "",
+    population: 0,
     county: "",
     countyfips:"" ,
     country: "",
@@ -78,7 +79,11 @@ export class MainpageComponent implements OnInit {
     HospitalState:"",
     HospitalName:"",
     HospitalType:"",
+    HospitalStatus:"",
   })
+
+  isfiltered:boolean=false;
+  drawTable:boolean=false;
 
   constructor(public service:HospitalService,private toastr: ToastrService,private fb: FormBuilder) { }
   list:hospitalModel[];
@@ -151,13 +156,29 @@ export class MainpageComponent implements OnInit {
 
   }
 
+  filteredTable(){
+    if(!this.isfiltered){
+      this.toastr.warning("Apply a filter and try again.","There are no filters applied.");
+      
+    }
+    if(this.loading){
+      this.toastr.warning("Data has not loaded yet.")
+    }
+    if(!this.loading&&this.isfiltered){
+      this.drawTable=true;
+    }
+  }
+
   resetFilter(){
+    this.drawTable=false;
+    this.isfiltered=false;
     this.listView=this.list.slice();
     this.AddFeature();
     this.toastr.success("Filters resetted.")
   }
 
   filterByName(){
+    this.isfiltered=true;
     console.log(this.formState.value.HospitalName);
     var hosName:string=this.formState.value.HospitalName
     hosName=hosName.toUpperCase();
@@ -174,10 +195,11 @@ export class MainpageComponent implements OnInit {
     }else{
       this.listView=filterTempList;
       this.AddFeature();
-      this.toastr.success("Filter successfully applied.")
+      this.toastr.success("Found "+this.listView.length+" Hospitals","Filter successfully applied.")
     }
   }
   filterByState(){
+    this.isfiltered=true;
     console.log(this.formState.value.HospitalState);
     var filterTempList=[];
     for (const element of this.listView) {
@@ -190,11 +212,12 @@ export class MainpageComponent implements OnInit {
     }else{
       this.listView=filterTempList;
       this.AddFeature();
-      this.toastr.success("Filter successfully applied.")
+      this.toastr.success("Found "+this.listView.length+" Hospitals","Filter successfully applied.")
     }
     
   }
   filterByType(){
+    this.isfiltered=true;
     console.log(this.formState.value.HospitalType);
 
     
@@ -213,11 +236,41 @@ export class MainpageComponent implements OnInit {
     }else{
       this.listView=filterTempList;
       this.AddFeature();
-      this.toastr.success("Filter successfully applied.")
+      this.toastr.success("Found "+this.listView.length+" Hospitals","Filter successfully applied.")
     }
     
   }
+  filterByStatus(){
+    this.isfiltered=true;
+    console.log(this.formState.value.HospitalStatus)
+    var filterTempList=[];
+    for (const element of this.listView) {
+      if(element.status.includes(this.formState.value.HospitalStatus)){
+        filterTempList.push(element);
+      }
+    }
+    if(filterTempList.length==0){
+      this.toastr.warning("The filter didn't go through, try something else","There are no hospitals fitting this filter");
+    }else{
+      this.listView=filterTempList;
+      this.AddFeature();
+      this.toastr.success("Found "+this.listView.length+" Hospitals","Filter successfully applied.")
+    }
 
+
+  }
+
+
+  goToLink(url: string){
+    if(url.includes("http")){
+      window.open(
+        url, "_blank");
+    }else{
+      window.open(
+        "http://"+url, "_blank");
+    }
+
+}
 
   initilizeMap2() {
 
@@ -278,7 +331,7 @@ export class MainpageComponent implements OnInit {
                 image: new Icon(({
                   
                   crossOrigin: 'anonymous',
-                  src: '/assets/asdf.png',
+                  src: '/assets/ksks.png',
                   imgSize: [20, 20]
                 }))
 

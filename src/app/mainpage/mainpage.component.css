@@ -47,8 +47,9 @@ html {
 }
 
 .map {
-height: 90vh;
-width: 99%;
+height: 94vh;
+width: 99.7%;
+padding-right: 0;
 
 }
 

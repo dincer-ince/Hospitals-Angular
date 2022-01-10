@@ -12,8 +12,8 @@ export class hospitalModel
         zip4: "";
         telephone:"";
         type: "";
-        status: "";
-        population: "";
+        status: string;
+        population: number;
         county: "";
         countyfips: "";
         country: "";
