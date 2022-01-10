@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { briefHospital, hospitalModel } from '../_services/hospital.model';
 import { HospitalService } from '../_services/hospital.service';
+import { ToastrService } from 'ngx-toastr';
+import { FormBuilder } from '@angular/forms';
+
 
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -71,18 +74,30 @@ export class MainpageComponent implements OnInit {
     helipad: ""
 };
 
-  constructor(public service:HospitalService) { }
+  formState = this.fb.group({
+    HospitalState:"",
+    HospitalName:"",
+    HospitalType:"",
+  })
+
+  constructor(public service:HospitalService,private toastr: ToastrService,private fb: FormBuilder) { }
   list:hospitalModel[];
+  listView:hospitalModel[];
   loading:boolean = false;
  // hospitalDetails: any;
     
   briefList:briefHospital[];
   map:Map;
+  view =new View({
+    center: [0, 0],
+    zoom: 3
+  })
+
   ngOnInit(): void {
     
     this.loadList();
     this.initilizeMap2();
-    
+
 
   }
 
@@ -93,7 +108,7 @@ export class MainpageComponent implements OnInit {
   AddFeature(){
     this.vectorSource.clear();
     var featureTest=[]
-    for (const element of this.list) {
+    for (const element of this.listView) {
     featureTest.push(new Feature({
       element: element,
       geometry: new Point(fromLonLat([element.longitude, element.latitude]))
@@ -102,17 +117,25 @@ export class MainpageComponent implements OnInit {
     console.log(featureTest[1])
     this.vectorSource.addFeatures(featureTest)
 
+    const extent = this.vectorLayer.getSource().getExtent();
+    this.view.fit(extent,{duration:400,maxZoom:8,padding: [ 100, 100, 100, 100 ]});
   }
   clearMap(){
     this.map.dispose()
     
   }
 
+
+  take10(){
+    this.listView=this.list.slice(0,11);
+    this.AddFeature();
+  }
+
  loadList(){
     
     this.loading=true;
   this.service.getHospitals().subscribe(res=> {
-    this. list=res as hospitalModel[],this.loading=false,console.log("doldu"),this.AddFeature()})
+    this. list=res as hospitalModel[],this.loading=false,console.log("doldu"),this.listView=this.list.slice(),this.AddFeature(),this.toastr.success("Data successfully retrieved")},err=> this.toastr.warning("Could not retrieve the hospital data"))
 
     
   }
@@ -128,6 +151,72 @@ export class MainpageComponent implements OnInit {
 
   }
 
+  resetFilter(){
+    this.listView=this.list.slice();
+    this.AddFeature();
+    this.toastr.success("Filters resetted.")
+  }
+
+  filterByName(){
+    console.log(this.formState.value.HospitalName);
+    var hosName:string=this.formState.value.HospitalName
+    hosName=hosName.toUpperCase();
+    console.log(hosName)
+    
+    var filterTempList=[];
+    for (const element of this.listView) {
+      if(element.name.includes(hosName)){
+        filterTempList.push(element);
+      }
+    }
+    if(filterTempList.length==0){
+      this.toastr.warning("The filter didn't go through, try something else","There are no hospitals fitting this filter");
+    }else{
+      this.listView=filterTempList;
+      this.AddFeature();
+      this.toastr.success("Filter successfully applied.")
+    }
+  }
+  filterByState(){
+    console.log(this.formState.value.HospitalState);
+    var filterTempList=[];
+    for (const element of this.listView) {
+      if(element.state==this.formState.value.HospitalState){
+        filterTempList.push(element);
+      }
+    }
+    if(filterTempList.length==0){
+      this.toastr.warning("The filter didn't go through, try something else","There are no hospitals fitting this filter");
+    }else{
+      this.listView=filterTempList;
+      this.AddFeature();
+      this.toastr.success("Filter successfully applied.")
+    }
+    
+  }
+  filterByType(){
+    console.log(this.formState.value.HospitalType);
+
+    
+    var hosType:string=this.formState.value.HospitalType
+    hosType=hosType.toUpperCase();
+    console.log(hosType)
+    
+    var filterTempList=[];
+    for (const element of this.listView) {
+      if(element.type.includes(hosType)){
+        filterTempList.push(element);
+      }
+    }
+    if(filterTempList.length==0){
+      this.toastr.warning("The filter didn't go through, try something else","There are no hospitals fitting this filter");
+    }else{
+      this.listView=filterTempList;
+      this.AddFeature();
+      this.toastr.success("Filter successfully applied.")
+    }
+    
+  }
 
 
   initilizeMap2() {
@@ -189,7 +278,7 @@ export class MainpageComponent implements OnInit {
                 image: new Icon(({
                   
                   crossOrigin: 'anonymous',
-                  src: '/assets/final.png',
+                  src: '/assets/asdf.png',
                   imgSize: [20, 20]
                 }))
 
@@ -227,12 +316,10 @@ export class MainpageComponent implements OnInit {
       ],
       overlays: [overlay],
       target: 'map',
-      view: new View({
-        center: [0, 0],
-        zoom: 2
-      })
+      view: this.view
     });
     this.map=map;
+    this.map.getView().setMaxZoom(20)
 // pointermove
     map.on('singleclick', (evt: any) => {
       const coordinate = evt.coordinate;
@@ -243,9 +330,12 @@ export class MainpageComponent implements OnInit {
         if(clickedFeature.length==1){
         var clickedHospital:hospitalModel= clickedFeature.pop().get("element");        
         this.hospitalDetails=clickedHospital;
-        content.innerHTML = '<h4>'+ clickedHospital.name +'</h4>'+ '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch demo modal</button>'
+        content.innerHTML = '<h4 style="text-align:center;">'+ clickedHospital.name +'</h4>'+ '<button style="margin-left:35%;" type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>'
 
         overlay.setPosition(coordinate);
+        }
+        else if(clickedFeature.length>1){
+          this.toastr.error("The point you clicked have multiple hospitals, zoom in to see individual hospitals.")
         }
  
         
