@@ -22,7 +22,11 @@ import { SpinnerComponent } from './spinner/spinner.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 3500,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+}),
     FormsModule,
     ReactiveFormsModule
     

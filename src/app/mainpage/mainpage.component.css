@@ -42,14 +42,12 @@
   content: "✖";
 }
 
-html {
-  background-color:#f2efe9;
-}
+
 
 .map {
-height: 94vh;
-width: 99.7%;
-padding-right: 0;
+height: calc(100vh - 57px);;
+width: 100%;
+
 
 }
 
@@ -60,8 +58,5 @@ flex-flow: column wrap;
 justify-content: space-between;
 }
 
-.content-area {
-height: 100%;
-}
 
 

@@ -119,7 +119,7 @@ export class MainpageComponent implements OnInit {
       geometry: new Point(fromLonLat([element.longitude, element.latitude]))
     }))  
     };
-    console.log(featureTest[1])
+    
     this.vectorSource.addFeatures(featureTest)
 
     const extent = this.vectorLayer.getSource().getExtent();
@@ -179,10 +179,10 @@ export class MainpageComponent implements OnInit {
 
   filterByName(){
     this.isfiltered=true;
-    console.log(this.formState.value.HospitalName);
+    //console.log(this.formState.value.HospitalName);
     var hosName:string=this.formState.value.HospitalName
     hosName=hosName.toUpperCase();
-    console.log(hosName)
+    //console.log(hosName)
     
     var filterTempList=[];
     for (const element of this.listView) {
@@ -197,10 +197,11 @@ export class MainpageComponent implements OnInit {
       this.AddFeature();
       this.toastr.success("Found "+this.listView.length+" Hospitals","Filter successfully applied.")
     }
+    this.formState.patchValue({HospitalState: "",HospitalType:"",HospitalName:"",HospitalStatus:""});
   }
   filterByState(){
     this.isfiltered=true;
-    console.log(this.formState.value.HospitalState);
+    //console.log(this.formState.value.HospitalState);
     var filterTempList=[];
     for (const element of this.listView) {
       if(element.state==this.formState.value.HospitalState){
@@ -214,16 +215,16 @@ export class MainpageComponent implements OnInit {
       this.AddFeature();
       this.toastr.success("Found "+this.listView.length+" Hospitals","Filter successfully applied.")
     }
-    
+    this.formState.patchValue({HospitalState: "",HospitalType:"",HospitalName:"",HospitalStatus:""});
   }
   filterByType(){
     this.isfiltered=true;
-    console.log(this.formState.value.HospitalType);
+    //console.log(this.formState.value.HospitalType);
 
     
     var hosType:string=this.formState.value.HospitalType
     hosType=hosType.toUpperCase();
-    console.log(hosType)
+    //console.log(hosType)
     
     var filterTempList=[];
     for (const element of this.listView) {
@@ -238,11 +239,12 @@ export class MainpageComponent implements OnInit {
       this.AddFeature();
       this.toastr.success("Found "+this.listView.length+" Hospitals","Filter successfully applied.")
     }
+    this.formState.patchValue({HospitalState: "",HospitalType:"",HospitalName:"",HospitalStatus:""});
     
   }
   filterByStatus(){
     this.isfiltered=true;
-    console.log(this.formState.value.HospitalStatus)
+    //console.log(this.formState.value.HospitalStatus)
     var filterTempList=[];
     for (const element of this.listView) {
       if(element.status.includes(this.formState.value.HospitalStatus)){
@@ -257,7 +259,7 @@ export class MainpageComponent implements OnInit {
       this.toastr.success("Found "+this.listView.length+" Hospitals","Filter successfully applied.")
     }
 
-
+    this.formState.patchValue({HospitalState: "",HospitalType:"",HospitalName:"",HospitalStatus:""});
   }
 
 
