@@ -383,7 +383,7 @@ export class MainpageComponent implements OnInit {
         var clickedFeatureClust= map.getFeaturesAtPixel(evt.pixel).pop();
         var clickedFeature =clickedFeatureClust.get("features");
         if(clickedFeature.length==1){
-        var clickedHospital:hospitalModel= clickedFeature.pop().get("element");        
+        var clickedHospital:hospitalModel= clickedFeature[0].get("element");        
         this.hospitalDetails=clickedHospital;
         content.innerHTML = '<h4 style="text-align:center;">'+ clickedHospital.name +'</h4>'+ '<button style="margin-left:35%;" type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>'
 
