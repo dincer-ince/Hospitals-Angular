@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { briefHospital, hospitalModel } from './hospital.model';
-import { Observable, map } from 'rxjs';
+import { Observable, map,timer } from 'rxjs';
+import { timeout, catchError, retryWhen,delayWhen  } from 'rxjs/operators';
 
 
 @Injectable({
@@ -18,9 +19,9 @@ export class HospitalService {
   getHospitals() {
     
     return this.http.get('https://hctp-database-test.herokuapp.com/api/hospitals').pipe(
-      map(res=>{
+    map(res=>{
         return res as hospitalModel[]
-      } ))
+      } ),timeout(15000))
   }
   HospitalTypes =["GENERAL ACUTE CARE","CRITICAL ACCESS","MILITARY","SPECIAL","LONG TERM CARE","REHABILITATION","PSYCHIATRIC","CHILDREN","WOMEN","CHRONIC DISEASE"]
 

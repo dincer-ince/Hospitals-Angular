@@ -11,7 +11,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <button [disabled]="this.loading" class="btn btn-xl" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Filter</button>
           </li>
@@ -20,7 +20,19 @@
           </li>
 
         </ul>
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav mx-auto">
+          <li  class="nav-item  ">
+            <button *ngIf="this.layerSelector==1"  (click)="LayerChange(0);this.layerSelector=0;" type="button" class="btn" >
+              Layer: Bing Maps
+            </button>
+          </li>
+          <li  class="nav-item  ">
+            <button *ngIf="this.layerSelector==0" (click)="LayerChange(1);this.layerSelector=1;" type="button" class="btn" >
+              Layer: OSM
+            </button>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto ">
           <li  class="nav-item  ">
             <button (click)="filteredTable()" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal2">
               Filtered Result in Table
@@ -317,3 +329,8 @@
     </div>
   </div>
 
+<div *ngIf="this.loadFailed==true" style="position: absolute; left:78vh; top:20vh;" >
+  <h2>
+    LOAD FAILED PLEASE REFRESH THE PAGE
+  </h2>
+</div>

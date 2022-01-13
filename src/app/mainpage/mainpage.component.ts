@@ -20,7 +20,7 @@ import Geometry from 'ol/geom/Geometry';
 import Cluster from 'ol/source/Cluster';
 import { ThisReceiver } from '@angular/compiler';
 import { NgClass } from '@angular/common';
-
+import BingMaps from'ol/source/BingMaps';
 
 
 
@@ -84,7 +84,8 @@ export class MainpageComponent implements OnInit {
 
   isfiltered:boolean=false;
   drawTable:boolean=false;
-
+  layerSelector:number=1;
+  loadFailed:boolean=false;
   constructor(public service:HospitalService,private toastr: ToastrService,private fb: FormBuilder) { }
   list:hospitalModel[];
   listView:hospitalModel[];
@@ -112,47 +113,53 @@ export class MainpageComponent implements OnInit {
 
   AddFeature(){
     this.vectorSource.clear();
-    var featureTest=[]
+    var featureTemp=[]
     for (const element of this.listView) {
-    featureTest.push(new Feature({
+    featureTemp.push(new Feature({
       element: element,
       geometry: new Point(fromLonLat([element.longitude, element.latitude]))
     }))  
     };
     
-    this.vectorSource.addFeatures(featureTest)
+    this.vectorSource.addFeatures(featureTemp)
 
     const extent = this.vectorLayer.getSource().getExtent();
     this.view.fit(extent,{duration:400,maxZoom:8,padding: [ 100, 100, 100, 100 ]});
   }
+
   clearMap(){
     this.map.dispose()
     
   }
 
 
-  take10(){
-    this.listView=this.list.slice(0,11);
-    this.AddFeature();
-  }
 
  loadList(){
     
     this.loading=true;
   this.service.getHospitals().subscribe(res=> {
-    this. list=res as hospitalModel[],this.loading=false,console.log("doldu"),this.listView=this.list.slice(),this.AddFeature(),this.toastr.success("Data successfully retrieved")},err=> this.toastr.warning("Could not retrieve the hospital data"))
+    this. list=res as hospitalModel[],this.loading=false,console.log("doldu"),this.listView=this.list.slice(),this.AddFeature(),this.toastr.success("Data successfully retrieved")},err=> {
+      this.toastr.warning("Could not retrieve the hospital data, please refresh the page"),this.loadFailed=true,this.clearMap()})
 
     
   }
-  checkList(){
-    //  this.list.forEach(element => {
-    //   this.vectorSource.addFeature(new Feature({
-    //     element: element,
-    //     geometry: new Point(fromLonLat([element.longitude, element.latitude]))
-    //   }))  
-    //   });
-    
+  LayerChange(i:number){
 
+    if(i==0){
+      this.map.setLayers([
+        new TileLayer({
+          source: new OSM(),
+        }), this.vectorLayer
+      ])
+    }
+    else if(i==1){
+      this.map.setLayers([
+        new TileLayer({
+          source: new BingMaps({ key:'AsmZX6Q8oQACekf3xwDyYpdMfZK1E6wXYfFhJNh3U7UuhHVwvl2Dh2mf74UpGwtg',imagerySet: 'Road',}),
+        }), this.vectorLayer
+      ])
+    }
+    
 
   }
 
@@ -174,7 +181,7 @@ export class MainpageComponent implements OnInit {
     this.isfiltered=false;
     this.listView=this.list.slice();
     this.AddFeature();
-    this.toastr.success("Filters resetted.")
+    this.toastr.success("Filters reset.")
   }
 
   filterByName(){
@@ -295,23 +302,7 @@ export class MainpageComponent implements OnInit {
       ]
     });
     
-    /*this.vectorLayer = new VectorLayer({
-      source: this.vectorSource
-    });
-    */
 
-    // for (const element of this.list) {
-    // this.vectorSource.addFeature(new Feature({
-    //   element: element,
-    //   geometry: new Point(fromLonLat([element.longitude, element.latitude]))
-    // }))  
-    // };
-    // this.list.forEach(element => {
-    //   this.vectorSource.addFeature(new Feature({
-    //     element: element,
-    //     geometry: new Point(fromLonLat([element.longitude, element.latitude]))
-    //   }))  
-    //   });
 
     const clusterSource = new Cluster({
       distance: 40,
@@ -366,7 +357,7 @@ export class MainpageComponent implements OnInit {
     const map = new Map({
       layers: [
         new TileLayer({
-          source: new OSM(),
+          source: new BingMaps({ key:'AsmZX6Q8oQACekf3xwDyYpdMfZK1E6wXYfFhJNh3U7UuhHVwvl2Dh2mf74UpGwtg',imagerySet: 'RoadOnDemand',}),
         }), this.vectorLayer
       ],
       overlays: [overlay],
