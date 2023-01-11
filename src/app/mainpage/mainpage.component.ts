@@ -39,40 +39,40 @@ export class MainpageComponent implements OnInit {
   rasterLayer;
   
   hospitalDetails:hospitalModel={
-    x:"",
-    y: "",
-    fid: "",
-    id: "",
-    name: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
-    zip4: "",
-    telephone:"",
-    type: "",
-    status: "",
-    population: 0,
-    county: "",
-    countyfips:"" ,
-    country: "",
-    latitude: 0,
-    longitude: 0,
-    naicsCode: "",
-    naicsDesc: "",
-    source: "",
-    sourcedate: "",
-    valMethod: "",
-    valDate: "",
-    website: "",
-    stateId: "",
-    altName: "",
-    stFips: "",
-    owner: "",
-    ttlStaff: "",
-    beds: 0,
-    trauma:"",
-    helipad: ""
+    X:"",
+    Y: "",
+    FID: "",
+    ID: "",
+    NAME: "",
+    ADDRESS: "",
+    CITY: "",
+    STATE: "",
+    ZIP: "",
+    ZIP4: "",
+    TELEPHONE:"",
+    TYPE: "",
+    STATUS: "",
+    POPULATION: 0,
+    COUNTY: "",
+    COUNTYFIPS:"" ,
+    COUNTRY: "",
+    LATITUDE: 0,
+    LONGITUDE: 0,
+    NAICSCODE: "",
+    NAICSDESC: "",
+    SOURCE: "",
+    SOURCEDATE: "",
+    VALMETHOD: "",
+    VALDATE: "",
+    WEBSITE: "",
+    STATEID: "",
+    ALTNAME: "",
+    STFIPS: "",
+    OWNER: "",
+    TTLSTAFF: "",
+    BEDS: 0,
+    TRAUMA:"",
+    HELIPAD: ""
 };
 
   formState = this.fb.group({
@@ -117,7 +117,7 @@ export class MainpageComponent implements OnInit {
     for (const element of this.listView) {
     featureTemp.push(new Feature({
       element: element,
-      geometry: new Point(fromLonLat([element.longitude, element.latitude]))
+      geometry: new Point(fromLonLat([element.LONGITUDE, element.LATITUDE]))
     }))  
     };
     
@@ -138,7 +138,7 @@ export class MainpageComponent implements OnInit {
     
     this.loading=true;
   this.service.getHospitals().subscribe(res=> {
-    this. list=res as hospitalModel[],this.loading=false,console.log("doldu"),this.listView=this.list.slice(),this.AddFeature(),this.toastr.success("Data successfully retrieved")},err=> {
+    this. list=res as hospitalModel[],this.loading=false,this.listView=this.list.slice(),this.AddFeature(),this.toastr.success("Data successfully retrieved")},err=> {
       this.toastr.warning("Could not retrieve the hospital data, please refresh the page"),this.loadFailed=true,this.clearMap()})
 
     
@@ -193,7 +193,7 @@ export class MainpageComponent implements OnInit {
     
     var filterTempList=[];
     for (const element of this.listView) {
-      if(element.name.includes(hosName)){
+      if(element.NAME.includes(hosName)){
         filterTempList.push(element);
       }
     }
@@ -211,7 +211,7 @@ export class MainpageComponent implements OnInit {
     //console.log(this.formState.value.HospitalState);
     var filterTempList=[];
     for (const element of this.listView) {
-      if(element.state==this.formState.value.HospitalState){
+      if(element.STATE==this.formState.value.HospitalState){
         filterTempList.push(element);
       }
     }
@@ -235,7 +235,7 @@ export class MainpageComponent implements OnInit {
     
     var filterTempList=[];
     for (const element of this.listView) {
-      if(element.type.includes(hosType)){
+      if(element.TYPE.includes(hosType)){
         filterTempList.push(element);
       }
     }
@@ -254,7 +254,7 @@ export class MainpageComponent implements OnInit {
     //console.log(this.formState.value.HospitalStatus)
     var filterTempList=[];
     for (const element of this.listView) {
-      if(element.status.includes(this.formState.value.HospitalStatus)){
+      if(element.STATUS.includes(this.formState.value.HospitalStatus)){
         filterTempList.push(element);
       }
     }
@@ -376,7 +376,7 @@ export class MainpageComponent implements OnInit {
         if(clickedFeature.length==1){
         var clickedHospital:hospitalModel= clickedFeature[0].get("element");        
         this.hospitalDetails=clickedHospital;
-        content.innerHTML = '<h4 style="text-align:center;">'+ clickedHospital.name +'</h4>'+ '<button style="margin-left:35%;" type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>'
+        content.innerHTML = '<h4 style="text-align:center;">'+ clickedHospital.NAME +'</h4>'+ '<button style="margin-left:35%;" type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>'
 
         overlay.setPosition(coordinate);
         }

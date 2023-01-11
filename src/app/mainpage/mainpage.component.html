@@ -4,7 +4,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="/assets/hacettepe1.png" alt="" width="24" height="30" class="d-inline-block align-text-top">
+        <img src="./assets/hacettepe1.png" alt="" width="24" height="30" class="d-inline-block align-text-top">
         Hacettepe
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,20 +73,20 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div  class="modal-body">
-          <h5 style="text-align: center;">{{this.hospitalDetails.name}}</h5>
+          <h5 style="text-align: center;">{{this.hospitalDetails.NAME}}</h5>
           
           <table class="table ">
             <thead>
 
             </thead>
             <tbody>
-              <tr class="table-danger" *ngIf="this.hospitalDetails.status!='OPEN'">
+              <tr class="table-danger" *ngIf="this.hospitalDetails.STATUS!='OPEN'">
                 
                 <td >Status</td>
-                <td>{{this.hospitalDetails.status}}</td>
+                <td>{{this.hospitalDetails.STATUS}}</td>
 
               </tr>
-              <tr class="table-success" *ngIf="this.hospitalDetails.status=='OPEN'">
+              <tr class="table-success" *ngIf="this.hospitalDetails.STATUS=='OPEN'">
                 
                 <td >Status</td>
                 <td>Open</td>
@@ -95,64 +95,64 @@
               <tr>
                 
                 <td>Type</td>
-                <td>{{this.hospitalDetails.type}}</td>
+                <td>{{this.hospitalDetails.TYPE}}</td>
 
               </tr>
-              <tr *ngIf="this.hospitalDetails.owner!=null">
+              <tr *ngIf="this.hospitalDetails.OWNER!=null">
                 
                 <td>Owner</td>
-                <td>{{this.hospitalDetails.owner}}</td>
+                <td>{{this.hospitalDetails.OWNER}}</td>
 
               </tr>
               <tr>
                 
                 <td>Website</td>
-                <td><a href="" (click)="goToLink(this.hospitalDetails.website)">{{this.hospitalDetails.website}}</a></td>
+                <td><a href="" (click)="goToLink(this.hospitalDetails.WEBSITE)">{{this.hospitalDetails.WEBSITE}}</a></td>
 
               </tr>
               <tr>
                 
                 <td>State</td>
-                <td>{{this.hospitalDetails.state}}</td>
+                <td>{{this.hospitalDetails.STATE}}</td>
 
               </tr>
               <tr>
                 
                 <td>City</td>
-                <td>{{this.hospitalDetails.city}}</td>
+                <td>{{this.hospitalDetails.CITY}}</td>
 
               </tr>
               <tr>
                 
                 <td>County</td>
-                <td>{{this.hospitalDetails.county}}</td>
+                <td>{{this.hospitalDetails.COUNTY}}</td>
 
               </tr>
               <tr>
                 
                 <td>Address</td>
-                <td>{{this.hospitalDetails.address}}</td>
+                <td>{{this.hospitalDetails.ADDRESS}}</td>
 
               </tr>
-              <tr class="table-danger" *ngIf="this.hospitalDetails.population==-999">
+              <tr class="table-danger" *ngIf="this.hospitalDetails.POPULATION==-999">
                 
                 <td>Population</td>
                 <td>DATA NOT AVAILABLE</td>
 
               </tr>
-              <tr *ngIf="this.hospitalDetails.population!=-999">
+              <tr *ngIf="this.hospitalDetails.POPULATION!=-999">
                 
                 <td>Population</td>
-                <td>{{this.hospitalDetails.population}}</td>
+                <td>{{this.hospitalDetails.POPULATION}}</td>
 
               </tr>
-              <tr class="table-danger" *ngIf="this.hospitalDetails.helipad=='N'">
+              <tr class="table-danger" *ngIf="this.hospitalDetails.HELIPAD=='N'">
                 
                 <td >Helipad</td>
-                <td>{{this.hospitalDetails.helipad}}</td>
+                <td>{{this.hospitalDetails.HELIPAD}}</td>
 
               </tr>
-              <tr class="table-success" *ngIf="this.hospitalDetails.helipad=='Y'">
+              <tr class="table-success" *ngIf="this.hospitalDetails.HELIPAD=='Y'">
                 
                 <td >Helipad</td>
                 <td>Available</td>
@@ -309,12 +309,12 @@
               <ng-container *ngFor="let hospital of this.listView; index as i">
                 <tr >
                   <th scope="row">{{i+1}}</th>
-                  <td>{{hospital.name}}</td>
-                  <td>{{hospital.status}}</td>
-                  <td>{{hospital.type}}</td>
-                  <td>{{hospital.state}}</td>
-                  <td>{{hospital.city}}</td>
-                  <td>{{hospital.address}}</td>
+                  <td>{{hospital.NAME}}</td>
+                  <td>{{hospital.STATUS}}</td>
+                  <td>{{hospital.TYPE}}</td>
+                  <td>{{hospital.STATE}}</td>
+                  <td>{{hospital.CITY}}</td>
+                  <td>{{hospital.ADDRESS}}</td>
                 </tr>
               </ng-container>
 

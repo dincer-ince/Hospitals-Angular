@@ -12,13 +12,13 @@ export class HospitalService {
 
   constructor(private http: HttpClient) { }
 
-  readonly url='https://localhost:5001/api/'
+  readonly url='https://hospital-service-p9t3.onrender.com/'
   hospitalsList:briefHospital[];
   loading:boolean = false;
 
   getHospitals() {
     
-    return this.http.get('https://hctp-database-test.herokuapp.com/api/hospitals').pipe(
+    return this.http.get(this.url+'hospitals').pipe(
     map(res=>{
         return res as hospitalModel[]
       } ),timeout(15000))
