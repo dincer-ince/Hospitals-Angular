@@ -324,7 +324,7 @@ export class MainpageComponent implements OnInit {
                 image: new Icon(({
                   
                   crossOrigin: 'anonymous',
-                  src: '/assets/ksks.png',
+                  src: '././assets/ksks.png',
                   imgSize: [20, 20]
                 }))
 
