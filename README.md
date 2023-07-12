@@ -8,6 +8,6 @@ A user-oriented GIS web application that displays the hospitals of United States
 ![main](./readmeAssets/hospitalDialog.PNG)
 ![main](./readmeAssets/filterNav.PNG)
 ![main](./readmeAssets/filter2.PNG)
-![main](./readmeAssets/filter3.PNG)
+![main](./readmeAssets/Filter3.PNG)
 ![main](./readmeAssets/filter4.PNG)
 ![main](./readmeAssets/newResults.PNG)
